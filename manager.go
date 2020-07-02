@@ -4,8 +4,10 @@ import (
 	"context"
 	"errors"
 	"github.com/filecoin-project/sector-storage/common/dlog/dsectorslog"
+	"go.uber.org/zap"
 	"io"
 	"net/http"
+	"reflect"
 
 	"github.com/ipfs/go-cid"
 	logging "github.com/ipfs/go-log/v2"
@@ -259,6 +261,7 @@ func (m *Manager) NewSector(ctx context.Context, sector abi.SectorID) error {
 }
 
 func (m *Manager) AddPiece(ctx context.Context, sector abi.SectorID, existingPieces []abi.UnpaddedPieceSize, sz abi.UnpaddedPieceSize, r io.Reader) (abi.PieceInfo, error) {
+	dsectorslog.L.Debug("manager AddPiece", zap.Uint64("sid", uint64(sector.Number)))
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
@@ -279,6 +282,7 @@ func (m *Manager) AddPiece(ctx context.Context, sector abi.SectorID, existingPie
 
 	var out abi.PieceInfo
 	err = m.sched.Schedule(ctx, sector, sealtasks.TTAddPiece, selector, schedNop, func(ctx context.Context, w Worker) error {
+		dsectorslog.L.Debug("manager call worker AddPiece", zap.String("worker type", reflect.TypeOf(w).String()))
 		p, err := w.AddPiece(ctx, sector, existingPieces, sz, r)
 		if err != nil {
 			return err
