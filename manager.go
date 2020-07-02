@@ -261,7 +261,7 @@ func (m *Manager) NewSector(ctx context.Context, sector abi.SectorID) error {
 }
 
 func (m *Manager) AddPiece(ctx context.Context, sector abi.SectorID, existingPieces []abi.UnpaddedPieceSize, sz abi.UnpaddedPieceSize, r io.Reader) (abi.PieceInfo, error) {
-	dsectorslog.L.Debug("manager AddPiece", zap.Uint64("sid", uint64(sector.Number)))
+	dsectorslog.L.Debug("manager AddPiece", zap.Uint64("sid", uint64(sector.Number)), zap.Int("existingPieces len", len(existingPieces)), zap.Uint64("new piece size", uint64(sz.Padded())))
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
