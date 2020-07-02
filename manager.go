@@ -3,6 +3,7 @@ package sectorstorage
 import (
 	"context"
 	"errors"
+	"github.com/filecoin-project/sector-storage/common/dlog/dsectorslog"
 	"io"
 	"net/http"
 
@@ -445,6 +446,7 @@ func (m *Manager) ReleaseUnsealed(ctx context.Context, sector abi.SectorID, safe
 }
 
 func (m *Manager) Remove(ctx context.Context, sector abi.SectorID) error {
+	dsectorslog.L.Debug("Remove sector")
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
