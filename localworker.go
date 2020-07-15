@@ -2,8 +2,11 @@ package sectorstorage
 
 import (
 	"context"
+	"github.com/filecoin-project/sector-storage/common/dlog/dsectorslog"
+	"go.uber.org/zap"
 	"io"
 	"os"
+	"reflect"
 	"runtime"
 
 	"github.com/elastic/go-sysinfo"
@@ -109,6 +112,8 @@ func (l *LocalWorker) AddPiece(ctx context.Context, sector abi.SectorID, epcs []
 	if err != nil {
 		return abi.PieceInfo{}, err
 	}
+
+	dsectorslog.L.Debug("local worker AddPiece", zap.String("sb type", reflect.TypeOf(sb).String()))
 
 	return sb.AddPiece(ctx, sector, epcs, sz, r)
 }

@@ -23,7 +23,7 @@ require (
 	github.com/stretchr/testify v1.4.0
 	go.opencensus.io v0.22.3
 	go.uber.org/atomic v1.5.1 // indirect
-	go.uber.org/zap v1.13.0 // indirect
+	go.uber.org/zap v1.13.0
 	golang.org/x/crypto v0.0.0-20191206172530-e9b2fee46413 // indirect
 	golang.org/x/lint v0.0.0-20191125180803-fdd1cda4f05f // indirect
 	golang.org/x/sys v0.0.0-20200107162124-548cf772de50 // indirect
