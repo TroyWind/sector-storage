@@ -4,6 +4,8 @@ package ffiwrapper
 
 import (
 	"context"
+	"github.com/filecoin-project/sector-storage/common/dlog/dsectorslog"
+	"go.uber.org/zap"
 	"golang.org/x/xerrors"
 
 	"go.opencensus.io/trace"
@@ -63,6 +65,7 @@ func (sb *Sealer) pubSectorToPriv(ctx context.Context, mid abi.ActorID, sectorIn
 		sid := abi.SectorID{Miner: mid, Number: s.SectorNumber}
 
 		paths, d, err := sb.sectors.AcquireSector(ctx, sid, stores.FTCache|stores.FTSealed, 0, stores.PathStorage)
+		dsectorslog.L.Debug("pubSectorToPriv AcquireSector", zap.Any("paths", paths), zap.Any("err", err))
 		if err != nil {
 			log.Warnw("failed to acquire sector, skipping", "sector", sid, "error", err)
 			skipped = append(skipped, sid)
